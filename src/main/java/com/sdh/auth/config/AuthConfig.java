@@ -23,7 +23,9 @@ public class AuthConfig implements AuthorizationServerConfigurer {
                 .authorities("ROLE_TEST")
                 .scopes("read","write")
                 .accessTokenValiditySeconds(60*60*4)
-                .refreshTokenValiditySeconds(60*60*24*30);
+                .refreshTokenValiditySeconds(60*60*24*30)
+        .redirectUris("http://localhost:8080/welcome")
+        ;
 
     }
 

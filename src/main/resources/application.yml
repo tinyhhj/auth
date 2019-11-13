@@ -1,5 +1,3 @@
-security:
-  oauth2:
-    client:
-      client-id: test-client
-      client-secret: testclient123
+logging:
+  level:
+    org.springframework.security: debug
