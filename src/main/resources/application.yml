@@ -1,3 +1,18 @@
 logging:
   level:
     org.springframework.security: debug
+
+
+spring:
+  h2:
+    console:
+      enabled: true  # H2 웹 콘솔을 사용하겠다는 의미
+      path: /h2-console
+  datasource:
+    driver-class-name: org.h2.Driver  #h2 드라이버 설정
+    url: jdbc:h2:mem:/test_db;  #접속 URL
+    username: sa  # 사용자 이름 (로그인 시 사용)
+  jpa:
+    hibernate:
+      ddl-auto: update
+    showSql: true

@@ -1,13 +1,18 @@
 package com.sdh.auth.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 
+import javax.sql.DataSource;
+
 @Configuration
 public class AuthConfig implements AuthorizationServerConfigurer {
+    @Autowired
+    DataSource dataSource;
     @Override
     public void configure(AuthorizationServerSecurityConfigurer authorizationServerSecurityConfigurer) throws Exception {
 
@@ -24,9 +29,9 @@ public class AuthConfig implements AuthorizationServerConfigurer {
                 .scopes("read","write")
                 .accessTokenValiditySeconds(60*60*4)
                 .refreshTokenValiditySeconds(60*60*24*30)
-        .redirectUris("http://localhost:8080/welcome")
-        ;
-
+        .redirectUris("http://localhost:8080/welcome");
+        clientDetailsServiceConfigurer
+                    .jdbc(dataSource);
     }
 
     @Override
