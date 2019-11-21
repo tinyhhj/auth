@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  application:
+    build: .
+    ports:
+      - 8080:8080
+    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/piano?useSSL=false&allowPublicKeyRetrieval=true
+#      SPRING_DATASOURCE_USERNAME: root
+#      SPRING_DATASOURCE_PASSWORD: r00t
+      TZ: "Asia/Seoul"
+    volumes:
+      - logs:/logs
