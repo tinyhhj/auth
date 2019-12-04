@@ -22,7 +22,6 @@ class AuthApplicationTests {
 	void 클라이언트_인증() throws Exception {
 		mockMvc.perform(post("/oauth/token")
 				.param("grant_type","client_credentials")
-				.param("scope","write")
 				.with(httpBasic("test-client","test-client")))
 				.andDo(print())
 				.andExpect(status().isOk());
@@ -34,6 +33,7 @@ class AuthApplicationTests {
 				.param("grant_type","authorization_code")
 				.param("response_type","code")
 				.param("client_id","test-client")
+				.with(httpBasic("testuser","password"))
 				.param("state","12345");
 		mockMvc.perform(builder)
 				.andDo(print())
