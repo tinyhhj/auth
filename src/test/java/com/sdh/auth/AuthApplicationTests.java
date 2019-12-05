@@ -1,9 +1,15 @@
 package com.sdh.auth;
 
+import com.google.gson.Gson;
+import com.sdh.auth.domain.OauthClientDetails;
+import com.sdh.auth.dto.OauthClientDetailsDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -15,9 +21,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
+@Import(TestAuthConfig.class)
 class AuthApplicationTests {
 	@Autowired
 	MockMvc mockMvc;
+	Gson gson= new Gson();
 	@Test
 	void 클라이언트_인증() throws Exception {
 		mockMvc.perform(post("/oauth/token")
@@ -45,4 +54,26 @@ class AuthApplicationTests {
 				.andExpect(status().isOk());
 	}
 
+	@Test
+	public void add_client() throws Exception {
+		OauthClientDetails client = add_client("test");
+		authorization_client(client.getClientId(), client.getClientSecret());
+	}
+
+	private OauthClientDetails add_client(String url) throws Exception {
+		return gson.fromJson(mockMvc.perform(post("/api/v1/auth/clients")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(gson.toJson(OauthClientDetailsDto.create(url)))
+				.with(httpBasic("testuser","password")))
+				.andExpect(status().isOk())
+				.andReturn().getResponse().getContentAsString(), OauthClientDetails.class);
+	}
+
+	private void authorization_client(String id, String password) throws Exception {
+		mockMvc.perform(post("/oauth/token")
+				.param("grant_type","client_credentials")
+				.with(httpBasic(id,password)))
+				.andDo(print())
+				.andExpect(status().isOk());
+	}
 }

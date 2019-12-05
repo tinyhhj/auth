@@ -1,5 +1,6 @@
 package com.sdh.auth.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -13,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @Setter
-public class OauthClient {
+public class OauthClientDetails {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -32,7 +33,7 @@ public class OauthClient {
     private String additionalInformation;
     private String autoapprove;
 
-    public OauthClient() {
+    public OauthClientDetails() {
         //default
         setAuthorizedGrantTypes("authorization_code, client_credentials, refresh, password");
     }

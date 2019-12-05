@@ -1,8 +1,7 @@
 package com.sdh.auth.controller;
 
-import com.sdh.auth.config.AuthConfig;
 import com.sdh.auth.config.RootConfig;
-import com.sdh.auth.domain.OauthClient;
+import com.sdh.auth.domain.OauthClientDetails;
 import com.sdh.auth.repository.OauthClientRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest({RootConfig.class})
 @RunWith(SpringRunner.class)
-public class OauthClientControllerTest {
+public class OauthClientDetailsControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -37,7 +36,7 @@ public class OauthClientControllerTest {
     DataSource dataSource;
     @Test
     public void test() throws Exception {
-        OauthClient client = new OauthClient();
+        OauthClientDetails client = new OauthClientDetails();
         String webServerRedirectUri = "http://localhost:8080/redirect";
         String id = UUID.randomUUID().toString();
         client.setWebServerRedirectUri(webServerRedirectUri);

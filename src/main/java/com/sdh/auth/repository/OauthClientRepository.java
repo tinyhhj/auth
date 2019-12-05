@@ -1,7 +1,9 @@
 package com.sdh.auth.repository;
 
-import com.sdh.auth.domain.OauthClient;
+import com.sdh.auth.domain.OauthClientDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface OauthClientRepository extends JpaRepository<OauthClient, String> {
+@Repository
+public interface OauthClientRepository extends JpaRepository<OauthClientDetails, String> {
 }

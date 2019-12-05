@@ -1,6 +1,7 @@
 package com.sdh.auth.controller;
 
-import com.sdh.auth.domain.OauthClient;
+import com.sdh.auth.domain.OauthClientDetails;
+import com.sdh.auth.dto.OauthClientDetailsDto;
 import com.sdh.auth.repository.OauthClientRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,14 @@ public class OauthClientController {
 
     @Autowired
     PasswordEncoder passwordEncoder;
-    @PostMapping
-    public ResponseEntity<?> addClient(@RequestBody OauthClient client) {
+
+    @PostMapping(consumes={"application/json"})
+    public ResponseEntity<?> addClient(@RequestBody OauthClientDetailsDto dto) {
+        OauthClientDetails client = dto.toDomain();
+
+        // password
         String randomString = new RandomValueStringGenerator(32).generate();
-        client.setClientSecret(passwordEncoder.encode(randomString));
+        client.setClientSecret(randomString);
         repository.save(client);
         log.debug("[CREATED] client id : {}, client password: {}", client.getClientId(), randomString);
         return ResponseEntity.ok(client);
