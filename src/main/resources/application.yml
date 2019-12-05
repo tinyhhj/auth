@@ -3,6 +3,7 @@ logging:
     org.springframework.security: debug
 
 
+
 spring:
   h2:
     console:
@@ -16,3 +17,8 @@ spring:
     hibernate:
       ddl-auto: update
     showSql: true
+
+# swagger-ui custom path
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

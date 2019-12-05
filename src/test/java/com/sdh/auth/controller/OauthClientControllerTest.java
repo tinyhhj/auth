@@ -1,6 +1,7 @@
 package com.sdh.auth.controller;
 
 import com.sdh.auth.config.AuthConfig;
+import com.sdh.auth.config.RootConfig;
 import com.sdh.auth.domain.OauthClient;
 import com.sdh.auth.repository.OauthClientRepository;
 import org.junit.Test;
@@ -17,12 +18,14 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest({OauthClientController.class, AuthConfig.class})
+@WebMvcTest({RootConfig.class})
 @RunWith(SpringRunner.class)
 public class OauthClientControllerTest {
 
@@ -48,7 +51,18 @@ public class OauthClientControllerTest {
 
         actions.andExpect(jsonPath("clientId").value(id))
                 .andExpect(jsonPath("webServerRedirectUri").value(webServerRedirectUri));
+    }
 
+    @Test
+    public void test_password() throws Exception {
+        ResultActions actions = mockMvc.perform(post("/oauth/token")
+                .param("grant_type", "password")
+                .param("username","testuser")
+                .param("password", "password")
+                .with(httpBasic("test-client","test-client"))
+        ).andDo(print());
 
+        actions.andExpect(status().isOk())
+                .andExpect(jsonPath("access_token").exists());
     }
 }

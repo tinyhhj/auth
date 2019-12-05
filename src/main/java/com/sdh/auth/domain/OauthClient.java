@@ -34,6 +34,6 @@ public class OauthClient {
 
     public OauthClient() {
         //default
-        setAuthorizedGrantTypes("authorization_code, client_credentials, refresh");
+        setAuthorizedGrantTypes("authorization_code, client_credentials, refresh, password");
     }
 }
